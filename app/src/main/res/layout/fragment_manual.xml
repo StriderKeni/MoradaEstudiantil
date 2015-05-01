@@ -1,0 +1,225 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ManualFragment" >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:textColor="#000000"
+            android:text="Bienvenido al Manual de Ayuda de"
+            android:textStyle="bold"
+            />
+
+        <ImageView android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:background="@drawable/logo_studentrental"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="1) La aplicación Morada Estudiantil posee un sin fin de opciones para poder buscar un Alojamiento de manera facil y rapida. Dentro de las opciones puedes: Ver lista de Alojamientos disponibles, Buscar de forma personalizada un Alojamiento, Agregar a Favoritos, Ver Alojamientos y Servicios cercanos, entre otros."
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="2) En primera instancia se debe registrar en Morada Estudiantil, en el cual debes ingresar: rut, nombre, email, contraseña y teléfono móvil. En caso de error, será necesario verificar si los datos ingresados son correctos o si el teléfono móvil se encuentra conectado a internet de forma correcta."
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="3) Una vez registrado satisfactoriamente, podrás hacer uso de la aplicación Ingresando tus datos en el apartado de Inicio de Sesión. "
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="4) En el menú principal se cuenta con varias opciones. En primera instancia se podrá ver una lista de Alojamientos disponibles y además un botón que permite ver la ubicación geográfica de los Alojamientos y Servicios disponibles. "
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="5) Al hacer clic en un Alojamiento, se despliega una pantalla que cuenta con información detallada del Alojamiento, las habitaciones disponibles, ubicación geográfica, compartir en redes sociales o email y la opción de agregar a Favoritos."
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="6) En el menú desplegable ubicado en la parte superior izquierda, se encuentran las opciones de: Lista de Alojamientos, Búsqueda Personalizada, Lista de Favoritos, Mapa, Términos y condiciones, Ayuda."
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="7) En la opción de Búsqueda Personalizada podrás realizar el filtro de alojamientos ingresando datos tales como, comuna, tipo de alojamiento, rango de precios, entre otros. "
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="8) En Lista de Favoritos podrás ver todos los alojamientos que has agregado en tu lista hasta ese momento. Para de esta forma tener mejor manejo de la información que es importante para ti.  "
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:textColor="#000000"
+                android:text="Cualquier duda, consulta o recomendación es Bienvenida"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Nos encontramos en constante revisión y actualización de la aplicación, para que la experiencia de usuario sea la mejor. Por lo tanto, si posees alguna recomendación, queja, duda, etc. puedes enviarla en el siguiente formulario."
+                android:textStyle="italic"
+                android:id="@+id/recomendacion" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="De antemano, Gracias por constribuir y ser parte de Morada Estudiantil."
+                android:textStyle="italic"/>
+
+
+        <EditText android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:hint="Email de Contacto"
+            android:layout_margin="10dp"
+            android:id="@+id/edit_email_login"
+            android:inputType="textEmailAddress"
+            android:background="#f3f3f3"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="30dp"/>
+
+        <EditText android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:hint="Escribir texto Aquí"
+            android:id="@+id/edit_text_sugerencia"
+            android:inputType="textLongMessage"
+            android:background="#f3f3f3"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="30dp"/>
+
+        <Button
+            android:layout_width="125dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="Enviar"
+            android:textColor="#fff"
+            android:textSize="16dp"
+            android:background="@drawable/btn_circular"
+            android:id="@+id/btn_sugerencia" />
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+</ScrollView>

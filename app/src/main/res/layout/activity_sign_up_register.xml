@@ -1,0 +1,110 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    <LinearLayout
+
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#faa519"
+        android:orientation="vertical"
+        >
+
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical"
+            android:background="@drawable/greybackground"
+            >
+
+            <ImageView android:layout_width="150dp"
+                android:layout_height="90dp"
+                android:background="@drawable/logo_studentrental"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <EditText android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:hint="Rut"
+                android:id="@+id/edit_rut"
+                android:background="#f3f3f3"
+                android:paddingLeft="5dp"
+                android:inputType="number"
+                android:layout_marginTop="15dp"/>
+            <EditText
+                android:id="@+id/edit_nombre"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:hint="Nombre"
+                android:background="#f3f3f3"
+                android:paddingLeft="5dp"
+                android:inputType="textPersonName"
+                android:layout_marginTop="15dp"/>
+
+            <EditText android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:hint="Apellido"
+                android:id="@+id/edit_apellido"
+                android:background="#f3f3f3"
+                android:paddingLeft="5dp"
+                android:inputType="textPersonName"
+                android:layout_marginTop="15dp"/>
+
+            <EditText android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:hint="Email"
+                android:id="@+id/edit_email"
+                android:background="#f3f3f3"
+                android:paddingLeft="5dp"
+                android:inputType="textEmailAddress"
+                android:layout_marginTop="15dp"/>
+            <EditText android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:hint="Contraseña"
+                android:id="@+id/edit_contrasena"
+                android:inputType="textPassword"
+                android:background="#f3f3f3"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="15dp"/>
+            <EditText android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:hint="Telefono Movil"
+                android:id="@+id/edit_movil"
+                android:inputType="phone"
+                android:background="#f3f3f3"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="15dp"/>
+            <Button android:layout_width="190dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Registrar"
+                android:textColor="#fff"
+                android:background="@drawable/btn"
+                android:id="@+id/register_persona" />
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            >
+
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</ScrollView>

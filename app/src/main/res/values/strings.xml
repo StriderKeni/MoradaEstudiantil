@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="array_drawer_options">
+        <item>Alojamientos</item>
+        <item>Búsqueda Personalizada</item>
+        <item>Favoritos</item>
+        <item>Mapa</item>
+        <item>Terminos y Condiciones</item>
+        <item>Manual de Usuario</item>
+    </string-array>
+
+    <string name="drawer_open">Abrir</string>
+    <string name="drawer_close">Cerrar</string>
+    <string name="action_fav">Favorito</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_not_fav">No Favorito</string>
+    <string name="share">Las mejores ofertas de alojamientos las encuentras Aqui en Student Rental</string>
+    <string name="action_dialog">Mostrar Dialogo</string>
+    <string name="img_description">Encabezado</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="buscar">Buscar</string>
+    <string name="title_activity_buscar">Buscar</string>
+    <string name="favorito">Favoritos</string>
+    <string name="title_activity_favorito">Favoritos</string>
+    <string name="title_activity_busqueda_rapida">Busqueda Rapida</string>
+    <string name="busquedarapida">Busqueda Rapida</string>
+    <string name="mapa">Mapa</string>
+
+    <string-array name="comuna_spinner">
+        <item>Seleccionar</item>
+        <item>La Florida</item>
+        <item>San Ramon</item>
+        <item>San Miguel</item>
+        <item>Pirque</item>
+        <item>Macul</item>
+        <item>La Cisterna</item>
+        <item>San Joaquin</item>
+    </string-array>
+    <string-array name="tipo_alojamiento_spinnner">
+        <item>Seleccionar</item>
+        <item>Casa</item>
+        <item>Departamento</item>
+        <item>Pension</item>
+        <item>Residencial</item>
+    </string-array>
+    <string-array name="dormitorio_spinner">
+        <item>Seleccionar</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="banos_spinner">
+        <item>Seleccionar</item>
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="genero_spinner">
+        <item>Seleccionar</item>
+        <item>Masculino</item>
+        <item>Femenino</item>
+        <item>Otro</item>
+    </string-array>
+    <string-array name="comuna_opcional">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <!-- Button text Google+ -->
+    <string name="btn_logout_from_google">Cerrar Sesión de Google</string>
+    <string name="btn_revoke_access">Revocar Acceso</string>
+    <string name="title_activity_login">Iniciar Sesión</string>
+    <string name="title_activity_sign_up_register">Registrar</string>
+    <string name="app_name">Student Rental</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_login_activity2">LoginActivity2</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_id_facebook">1603864086523239</string>
+
+    <!-- style button -->
+    <style name="ButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <string name="title_activity_alojamiento">AlojamientoActivity</string>
+    <string name="title_activity_detalle_habitacion">DetalleHabitacionActivity</string>
+
+</resources>
