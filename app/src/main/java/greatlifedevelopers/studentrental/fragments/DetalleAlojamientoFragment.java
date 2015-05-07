@@ -6,7 +6,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -44,6 +46,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -109,6 +112,7 @@ public class DetalleAlojamientoFragment extends Fragment {
     private int mShortAnimationDuration;
 
     private ImageLoader imageLoader;
+    private MenuItem item;
 
 
     public DetalleAlojamientoFragment() {
@@ -129,8 +133,8 @@ public class DetalleAlojamientoFragment extends Fragment {
         idAlojamiento = activity.getMyData();
         idUsuario = activity.getDataUsuario();
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        /*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);*/
 
         View view = inflater.inflate(R.layout.fragment_detalle_alojamiento, container, false);
 
@@ -143,6 +147,7 @@ public class DetalleAlojamientoFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         new getDetalleAlojamiento().execute();
+        new verificarFavorito().execute();
 
         LinearLayout addUser = (LinearLayout) getActivity().findViewById(R.id.add_user);
         addUser.setOnClickListener(new View.OnClickListener() {
@@ -174,9 +179,6 @@ public class DetalleAlojamientoFragment extends Fragment {
             }
         });
 
-
-
-
         mShortAnimationDuration = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
 
@@ -192,26 +194,48 @@ public class DetalleAlojamientoFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         menu.clear();
         getActivity().getMenuInflater().inflate(R.menu.details, menu);
 
-        new ListFavoritos().execute();
+        /*new ListFavoritos().execute();*/
 
-
+/*
         Log.d("Favorite", String.valueOf(favorite));
-        if (new ListFavoritos().doInBackground().equals(false)) {
+        if(!favorite){
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_action_star_0));
 
         } else {
-
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_action_star_10));
-        }
+
+        }*/
+
+        /*
+        if (new ListFavoritos().doInBackground().equals(false)) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_action_star_0));
+
+                }
+            });
+
+        } else {
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_action_star_10));
+
+                }
+            });
+        } */
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch(item.getItemId()){
             case R.id.action_fav:
                 // Drawable icon = null;
@@ -247,6 +271,23 @@ public class DetalleAlojamientoFragment extends Fragment {
 
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        try{
+            new verificarFavorito().execute().get();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        Log.d("MENU FAVORITE:", String.valueOf(favorite));
+
+        if(!favorite){
+            menu.getItem(0).setIcon(R.drawable.ic_action_star_0);
+        } else {
+            menu.getItem(0).setIcon(R.drawable.ic_action_star_10);
+        }
+
+        super.onPrepareOptionsMenu(menu);
+    }
 
     class getDetalleAlojamiento extends AsyncTask<String, String, String>{
         @Override
@@ -267,6 +308,8 @@ public class DetalleAlojamientoFragment extends Fragment {
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("id_alojamiento", idAlojamiento));
+
+
 
             JSONObject json = jsonParser.makeHttpRequest(URL_DETALLE_ALOJAMIENTO, "GET", params);
 
@@ -424,7 +467,30 @@ public class DetalleAlojamientoFragment extends Fragment {
                 }
 
             } catch (JSONException e){
+
+                //COMENTAR
+                progressDialog.dismiss();
                 e.printStackTrace();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                        alert.setTitle("¡Lo sentimos!");
+                        alert.setMessage("Existe un problema con el servidor, te invitamos a intentarlo más tarde.");
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        alert.create().show();
+
+                    }
+                });
             }
 
             return null;
@@ -439,6 +505,47 @@ public class DetalleAlojamientoFragment extends Fragment {
     }
 
 
+
+    class verificarFavorito extends AsyncTask<String, String, Boolean>{
+
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+
+
+
+            int success;
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_alojamiento", idAlojamiento));
+            params.add(new BasicNameValuePair("id_usuario", idUsuario));
+
+            JSONObject jsonFavoritos = jsonParser.makeHttpRequest(URL_LIST_FAVORITOS, "GET", params);
+
+            Log.d("VERIFICAR FAVORITO:", jsonFavoritos.toString());
+
+            try{
+                success = jsonFavoritos.getInt(TAG_SUCCESS);
+                if(success==1){
+                    favorite = true;
+                    return true;
+                } else {
+                    favorite = false;
+                    return false;
+                }
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            Log.d("VERIFICAR FAVORITE:", String.valueOf(favorite));
+
+            if (favorite){
+                return true;
+            } else {
+                return true;
+            }
+        }
+
+    }
 
 
     class ListFavoritos extends AsyncTask<Void, Void, Boolean>{
@@ -458,9 +565,7 @@ public class DetalleAlojamientoFragment extends Fragment {
             nameValuePairs.add(new BasicNameValuePair("id_alojamiento", idAlojamiento));
             nameValuePairs.add(new BasicNameValuePair("id_usuario", idUsuario));
 
-
             try{
-
 
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 httpClient.execute(httpPost);
@@ -775,6 +880,7 @@ public class DetalleAlojamientoFragment extends Fragment {
     }
 
     public static boolean exists(String URLName){
+
         try {
             HttpURLConnection.setFollowRedirects(false);
             // note : you may also need

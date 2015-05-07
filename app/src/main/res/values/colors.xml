@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="actionbar_text">#FFFFFF</color>
+    <color name="stacker_bar">#2E9AFE</color>
+    <color name="background_bar">#2E9AFE</color>
+    <color name="split_bar">#81DAF5</color>
+
     <color name="normal_start">#2E9AFE</color>
     <color name="normal_end">#2E9AFE</color>
     <color name="normal_border">#0174DF</color>

@@ -57,7 +57,7 @@
         android:icon="@drawable/icono_student_rental"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"
-        android:theme="@style/AppTheme"
+        android:theme="@style/CustomActionBarTheme"
         android:name=".data.ParsePushApplication">
 
         <activity

@@ -309,7 +309,7 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
 
                         final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                         alert.setTitle("¡Error!");
-                        alert.setMessage("Por favor, revisa tú conexión a internet");
+                        alert.setMessage("Revisa la conexión de red o vuelve a intentarlo más tarde.");
                         alert.setCancelable(false);
                         alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                             @Override

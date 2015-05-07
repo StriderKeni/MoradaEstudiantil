@@ -72,18 +72,9 @@ public class BusquedaAlojamientoFragment extends android.support.v4.app.Fragment
             @Override
             public void onClick(View v) {
 
-                precio1 = Integer.parseInt(editPrecio1.getText().toString());
-                precio2 = Integer.parseInt(editPrecio2.getText().toString());
 
-                Intent intent = new Intent(getActivity(), ListBusquedaActivity.class);
-                intent.putExtra("comuna", comuna);
-                intent.putExtra("tipoAlojamiento", tipoAlojamiento);
-                intent.putExtra("precio1", precio1);
-                intent.putExtra("precio2", precio2);
-
-                getActivity().startActivity(intent);
-
-                /*try{
+                //COMENTAR
+                try{
 
                     precio1 = Integer.parseInt(editPrecio1.getText().toString());
                     precio2 = Integer.parseInt(editPrecio2.getText().toString());
@@ -98,6 +89,7 @@ public class BusquedaAlojamientoFragment extends android.support.v4.app.Fragment
 
                 } catch (NumberFormatException e){
 
+
                     final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                             alert.setTitle("¡Error!");
                             alert.setMessage("Por favor, rellena todos los campos");
@@ -110,11 +102,7 @@ public class BusquedaAlojamientoFragment extends android.support.v4.app.Fragment
                             });
                             alert.create().show();
 
-
-
-                } */
-
-
+                }
 
             }
         });

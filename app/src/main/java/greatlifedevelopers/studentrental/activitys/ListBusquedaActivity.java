@@ -176,7 +176,7 @@ public class ListBusquedaActivity extends ListActivity {
                         }
                     } else {
 
-                        /*runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
@@ -196,12 +196,35 @@ public class ListBusquedaActivity extends ListActivity {
                                 alert.create().show();
 
                             }
-                        });*/
+                        });
 
                     }
 
                 } catch (JSONException e){
-                    e.printStackTrace();
+
+
+                    //COMENTAR
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressDialog.dismiss();
+                            final AlertDialog.Builder alert = new AlertDialog.Builder(ListBusquedaActivity.this);
+                            alert.setTitle("Lo Sentimos");
+                            alert.setMessage("Actualmente no contamos con ningún Alojamiento acorde a tus requerimientos." +
+                                    "Te invitamos a realizar otra búsqueda.");
+                            alert.setCancelable(false);
+                            alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    finish();
+                                }
+                            });
+                            alert.create().show();
+
+                        }
+                    });
                 }
 
             } catch (UnsupportedOperationException e){
@@ -210,8 +233,36 @@ public class ListBusquedaActivity extends ListActivity {
                 e.printStackTrace();
             } catch (IOException e){
                 e.printStackTrace();
+
+
+
+                //COMENTAR
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        progressDialog.dismiss();
+                        final AlertDialog.Builder alert = new AlertDialog.Builder(ListBusquedaActivity.this);
+                        alert.setTitle("Lo Sentimos");
+                        alert.setMessage("Tu conexión se encuentra inestable o el servidor presenta problemas." +
+                                "Te invitamos a intentar nuevamente.");
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                finish();
+                            }
+                        });
+                        alert.create().show();
+
+                    }
+                });
+
             } catch (JSONException e){
                 e.printStackTrace();
+
+
             }
 
             return null;

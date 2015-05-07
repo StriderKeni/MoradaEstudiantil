@@ -105,6 +105,7 @@ public class ListFavoritosFragment extends ListFragment {
                 Intent i = new Intent(getActivity(), AlojamientoActivity.class);
 
                 i.putExtra("tagid", idAlojamiento);
+                i.putExtra("id_usuario", idUsuario);
                 getActivity().startActivityForResult(i, 100);
 
             }
@@ -190,6 +191,7 @@ public class ListFavoritosFragment extends ListFragment {
 
                 } else {
 
+                    //COMENTAR
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -208,12 +210,57 @@ public class ListFavoritosFragment extends ListFragment {
                         }
                     });
 
-
-
                 }
 
             } catch (JSONException e){
+
+                //COMENTAR
+                pDialog.dismiss();
                 e.printStackTrace();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                        alert.setTitle("¡Error!");
+                        alert.setMessage("Revisa la conexión de red o vuelve a intentarlo más tarde.");
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        alert.create().show();
+
+                    }
+                });
+            } catch (Exception e){
+                e.printStackTrace();
+
+                pDialog.dismiss();
+                e.printStackTrace();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                        alert.setTitle("¡Error!");
+                        alert.setMessage("Revisa la conexión de red o vuelve a intentarlo más tarde.");
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        alert.create().show();
+
+                    }
+                });
+
             }
 
             return null;

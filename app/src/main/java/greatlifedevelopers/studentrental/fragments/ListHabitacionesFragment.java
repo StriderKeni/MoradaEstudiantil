@@ -148,7 +148,10 @@ public class ListHabitacionesFragment extends ListFragment {
 
                     }
                 } else {
+
+                    //COMENTAR
                     progressDialog.dismiss();
+
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -170,6 +173,30 @@ public class ListHabitacionesFragment extends ListFragment {
 
             } catch (JSONException e){
                 e.printStackTrace();
+
+                //COMENTAR
+                progressDialog.dismiss();
+                e.printStackTrace();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                        alert.setTitle("¡Error!");
+                        alert.setMessage("Revisa la conexión de red o vuelve a intentarlo más tarde.");
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        alert.create().show();
+
+                    }
+                });
             }
 
             return null;

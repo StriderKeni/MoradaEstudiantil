@@ -81,7 +81,7 @@ public class MainActivity extends FragmentActivity implements ListView.OnItemCli
         drawer_list.setOnItemClickListener(this);
         drawer_toggle = new ActionBarDrawerToggle(this,
                 drawer_layout,
-                R.drawable.ic_action_document,
+                R.drawable.drawer,
                 R.string.drawer_open,
                 R.string.drawer_close) {
             public void onDrawerClosed(View view) {
