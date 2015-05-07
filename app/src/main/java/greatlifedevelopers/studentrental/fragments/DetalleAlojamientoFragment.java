@@ -271,6 +271,7 @@ public class DetalleAlojamientoFragment extends Fragment {
 
     }
 
+
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         try{
