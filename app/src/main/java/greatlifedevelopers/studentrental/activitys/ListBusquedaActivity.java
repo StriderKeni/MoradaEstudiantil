@@ -50,6 +50,7 @@ import greatlifedevelopers.studentrental.data.JSONParser;
  */
 public class ListBusquedaActivity extends ListActivity {
 
+
     ProgressDialog progressDialog;
     ArrayList<HashMap<String, String>> busquedaList;
     JSONParser jsonParser = new JSONParser();
