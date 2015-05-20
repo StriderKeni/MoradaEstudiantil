@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#2f6699"
+    android:background="#faa519"
     android:padding="10dp" >
 
     <LinearLayout
@@ -12,8 +12,9 @@
         android:background="#e8e8e7"
         android:orientation="vertical" >
 
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="2dp"
             android:layout_marginRight="2dp"
@@ -67,6 +68,30 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:background="#faa519"
+            android:paddingLeft="8dp"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:text="Datos Personales"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp"
+            android:orientation="vertical"
+            android:background="@drawable/greybackground">
 
 
             <LinearLayout
@@ -204,15 +229,50 @@
             </LinearLayout>
 
             <Button
-                android:layout_width="125dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:text="Editar"
                 android:background="@android:drawable/btn_default"
                 android:id="@+id/edit_user" />
 
-
         </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:background="#faa519"
+            android:paddingLeft="8dp"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:text="Cerrar Sesión"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp"
+            android:orientation="vertical"
+            android:background="@drawable/greybackground">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:text="Desconectar"
+                android:background="@android:drawable/btn_default"
+                android:id="@+id/btn_close_session" />
+
+
+
+            </LinearLayout>
+
+
+
+
 
     </LinearLayout>
 

@@ -73,11 +73,14 @@ import org.json.JSONObject;
 
 import greatlifedevelopers.studentrental.R;
 import greatlifedevelopers.studentrental.data.Constants;
+import greatlifedevelopers.studentrental.data.JSONParser;
 
 public class LoginActivity extends FragmentActivity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener {
 
     ProgressDialog progressDialog;
+    JSONParser jsonParser = new JSONParser();
+
 
     private static final String URL_LIST_USUARIOS =  Constants.URL_DOMINIO + "list_usuarios.php";
     private static final String URL_VALIDAR_LOGIN = Constants.URL_DOMINIO + "validar_login.php";
@@ -130,18 +133,11 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
     //hashing md5
     String correo, contrasena;
 
-    //Facebook Login
-    private LoginButton loginBtnFb;
-    private UiLifecycleHelper uiHelper;
-    private final static String FB_SUCESS = "Facebook Session";
-
 
     //SharedPreferences
     private SharedPreferences loginSharedPreferences;
     private SharedPreferences.Editor editorLoginPreferences;
     private static final int PREFERENCE_MODE_PRIVATE = 0;
-
-
 
 
     @Override
@@ -174,7 +170,7 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
                 if (editEmail.getText().length() != 0){
                     new ValidarLogin().execute();
                 } else {
-                    Log.d("Campos vacios", "");
+                    txtErrorLogin.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -201,24 +197,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
 
 
-        //Fb Session
-        uiHelper = new UiLifecycleHelper(this, statusCallback);
-        uiHelper.onCreate(savedInstanceState);
-        loginBtnFb = (LoginButton) findViewById(R.id.login_button);
-        loginBtnFb.setReadPermissions(Arrays.asList("email"));
-        loginBtnFb.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
-            @Override
-            public void onUserInfoFetched(GraphUser user) {
-                if(user !=null){
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(i);
-                    Log.e(FB_SUCESS, "Exito");
-                }
-                else {
-                    Log.e(FB_SUCESS, "Error");
-                }
-            }
-        });
 
     }
 
@@ -240,17 +218,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
     }
 
 
-    //Fb Session
-    private Session.StatusCallback statusCallback =  new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            if (state.isOpened()) {
-                Log.d("LoginActivity", "Facebook session opened");
-            } else if (state.isClosed()) {
-                Log.d("LoginActivity", "Facebook session closed");
-            }
-        }
-    };
 
     protected void onStart() {
         super.onStart();
@@ -260,25 +227,25 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        uiHelper.onPause();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        uiHelper.onDestroy();
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        uiHelper.onPause();
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        uiHelper.onSaveInstanceState(outState);
+
     }
 
     protected void onStop() {
@@ -341,8 +308,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
             }
         }
 
-        uiHelper.onActivityResult(requestCode, responseCode, intent);
-
     }
 
     @Override
@@ -365,28 +330,21 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
     private class LoadListUsuarios extends AsyncTask<String, String, String>{
 
         @Override
-        protected String doInBackground(String... params) {
-            HttpClient httpClient;
-            List<NameValuePair> listUsuarios;
-            HttpPost httpPost;
+        protected String doInBackground(String... args) {
 
-            httpClient = new DefaultHttpClient();
-            httpPost = new HttpPost(URL_LIST_USUARIOS);
+            int success;
 
-            listUsuarios = new ArrayList<NameValuePair>(1);
+            List<NameValuePair> listUsuarios = new ArrayList<NameValuePair>();
             listUsuarios.add(new BasicNameValuePair("correo", emailUsuario));
 
-            try{
-                httpPost.setEntity(new UrlEncodedFormEntity(listUsuarios));
-                httpClient.execute(httpPost);
+            JSONObject jsonObject = jsonParser.makeHttpRequest(URL_LIST_USUARIOS, "POST", listUsuarios);
 
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                String jsonResult = inputStreamToString(httpResponse.getEntity().getContent()).toString();
-                JSONObject jsonObject = new JSONObject(jsonResult);
 
-                int success = jsonObject.getInt(TAG_SUCCESS);
+            try {
 
-                if(success==1){
+                success = jsonObject.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
 
                     usuarioArray = jsonObject.getJSONArray(TAG_LIST_USUARIO);
 
@@ -406,7 +364,7 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
                     startActivity(main);
                     finish();
 
-                } else{
+                } else {
                     Intent register = new Intent(LoginActivity.this, SignUpRegister.class);
                     register.putExtra("emailUsuario", emailUsuario);
                     register.putExtra("nameUsuario", nameUsuario);
@@ -417,14 +375,9 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 
                 }
 
-            } catch (UnsupportedEncodingException e){
+            }catch (JSONException e){
                 e.printStackTrace();
-            } catch (ClientProtocolException e){
-                e.printStackTrace();
-            } catch (IOException e){
-                e.printStackTrace();
-            } catch (JSONException e){
-                e.printStackTrace();
+
             }
 
             return null;
@@ -432,28 +385,13 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 
         @Override
         protected void onPostExecute(String s) {
+            super.onPostExecute(s);
 
         }
 
 
     }
 
-    private StringBuilder inputStreamToString(InputStream is) {
-        String rLine = "";
-        StringBuilder answer = new StringBuilder();
-        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-
-        try {
-            while ((rLine = rd.readLine()) != null) {
-                answer.append(rLine);
-            }
-        }
-
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return answer;
-    }
 
     /**
      * Updating the UI, showing/hiding buttons and profile layout
@@ -663,37 +601,24 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
         @Override
         protected String doInBackground(String... params) {
 
-
-            HttpClient httpClient;
-            List<NameValuePair> usuario;
-            HttpPost httpPost;
-
-            httpClient = new DefaultHttpClient();
-            httpPost = new HttpPost(URL_VALIDAR_LOGIN);
+            int success;
 
             correo = editEmail.getText().toString();
             contrasena = editContrasena.getText().toString();
-
             String hashContrasena = hash(contrasena);
 
-            usuario = new ArrayList<NameValuePair>(2);
+            List<NameValuePair> usuario = new ArrayList<NameValuePair>();
             usuario.add(new BasicNameValuePair("correo", correo));
             usuario.add(new BasicNameValuePair("contrasena", hashContrasena));
 
-            try{
+            JSONObject jsonObject = jsonParser.makeHttpRequest(URL_VALIDAR_LOGIN, "POST", usuario);
 
-                httpPost.setEntity(new UrlEncodedFormEntity(usuario));
-                httpClient.execute(httpPost);
 
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                String jsonUsuario = inputStreamToString(httpResponse.getEntity().getContent()).toString();
-                JSONObject jsonObject = new JSONObject(jsonUsuario);
+                try {
 
-                try{
+                    success = jsonObject.getInt(TAG_SUCCESS);
 
-                    int success = jsonObject.getInt(TAG_SUCCESS);
-
-                    if(success==1){
+                    if (success == 1) {
 
                         usuarioArray = jsonObject.getJSONArray(TAG_LIST_USUARIO);
 
@@ -722,46 +647,33 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
                                 txtErrorLogin.setVisibility(View.VISIBLE);
                             }
                         });
-
                     }
 
                 } catch (JSONException e){
                     e.printStackTrace();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressDialog.dismiss();
+                            final AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
+                            alert.setTitle("¡Error!");
+                            alert.setMessage("Por favor, revisa los datos ingresados o tu conexión a internet");
+                            alert.setCancelable(false);
+                            alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            alert.create().show();
+
+                        }
+                    });
+
                 }
 
-            } catch (UnsupportedEncodingException e){
-                e.printStackTrace();
-            } catch (ClientProtocolException e){
-                e.printStackTrace();
-
-            } catch (IOException e){
-                e.printStackTrace();
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        progressDialog.dismiss();
-                        final AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
-                        alert.setTitle("¡Error!");
-                        alert.setMessage("Por favor, revisa los datos ingresados o tu conexión a internet");
-                        alert.setCancelable(false);
-                        alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        alert.create().show();
-
-                    }
-                });
-
-
-
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
             return null;
 
         }

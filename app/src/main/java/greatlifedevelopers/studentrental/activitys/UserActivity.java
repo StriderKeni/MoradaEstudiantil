@@ -4,8 +4,10 @@ import android.app.Activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -59,14 +61,11 @@ import com.androidquery.AQuery;
 import com.parse.codec.binary.Base64;
 
 
-
-
-
 public class UserActivity extends Activity {
 
     ProgressDialog progressDialog;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    Button btnSelect, btnEdit, btnPass;
+    Button btnSelect, btnEdit, btnPass, btnDisconnect;
     ImageView ivImage;
     JSONParser jsonParser = new JSONParser();
 
@@ -91,6 +90,10 @@ public class UserActivity extends Activity {
     private AQuery aq;
     private ProgressBar progressBar;
 
+    //SharedPreferences
+    private SharedPreferences loginSharedPreferences;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,9 +107,13 @@ public class UserActivity extends Activity {
 
         new getUserData().execute();
 
+        loginSharedPreferences = getApplicationContext().getSharedPreferences("loginPreferences", Context.MODE_PRIVATE);
+
+
         btnSelect = (Button) findViewById(R.id.btnSelectPhoto);
         btnEdit = (Button) findViewById(R.id.edit_user);
         btnPass = (Button) findViewById(R.id.changePass);
+        btnDisconnect =(Button) findViewById(R.id.btn_close_session);
 
         generoSpinner = (Spinner) findViewById(R.id.genero_spinner);
 
@@ -146,6 +153,17 @@ public class UserActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(UserActivity.this, ContrasenaActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        btnDisconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                loginSharedPreferences.edit().clear().commit();
+                Intent i = new Intent(UserActivity.this, SplashScreenActivity.class);
                 startActivity(i);
                 finish();
             }

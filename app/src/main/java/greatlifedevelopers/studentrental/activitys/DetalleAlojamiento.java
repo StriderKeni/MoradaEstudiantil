@@ -53,8 +53,6 @@ import greatlifedevelopers.studentrental.fragments.MapsV2;
 public class DetalleAlojamiento extends Activity{
 
     TextView txtNombre, txtNum_contacto, txtPrecio, txtDescripcion, txtAlimentacion;
-    EditText txtLatitud;
-    EditText txtLongitud;
     Button btnMapa;
     String latitud;
     String longitud;
@@ -411,7 +409,7 @@ public class DetalleAlojamiento extends Activity{
             e.printStackTrace();
         }
 
-        if (favorite == true) {
+        if (favorite) {
             return false;
         } else {
             return true;

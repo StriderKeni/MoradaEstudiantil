@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="app_red_1">#A23233</color>
+    <color name="app_red_2">#AE443B</color>
+    <color name="app_red_3">#C9534B</color>
+    <color name="app_red_4">#B6665F</color>
+    <color name="app_red_5">#D7A8A8</color>
+
+    <color name="app_green_1">#4B7D44</color>
+    <color name="app_green_2">#71986B</color>
+    <color name="app_green_3">#8BAA86</color>
+    <color name="app_green_4">#97B393</color>
+    <color name="app_green_5">#B1C6AD</color>
+
+
+
     <color name="actionbar_text">#FFFFFF</color>
     <color name="stacker_bar">#2E9AFE</color>
     <color name="background_bar">#2E9AFE</color>

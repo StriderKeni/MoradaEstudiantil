@@ -13,9 +13,9 @@
     <style name="MyActionBar"
         parent="@style/Widget.AppCompat.Light.Base.ActionBar.Solid.Inverse">
         <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
-        <item name="android:background">@color/background_bar</item>
-        <item name="android:backgroundStacked">@color/stacker_bar</item>
-        <item name="android:backgroundSplit">@color/split_bar</item>
+        <item name="android:background">@color/app_red_1</item>
+        <item name="android:backgroundStacked">@color/app_red_3</item>
+        <item name="android:backgroundSplit">@color/app_red_5</item>
     </style>
 
     <!-- ActionBar title text -->
