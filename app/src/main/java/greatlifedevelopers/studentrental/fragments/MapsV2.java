@@ -214,9 +214,9 @@ public class MapsV2 extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(MapsV2.this.getActivity());
-            pDialog.setMessage("Cargando Marcadores... Por favor espere.");
+            pDialog.setMessage("Cargando Información... Por favor espere un momento.");
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
+            pDialog.setCancelable(true);
             pDialog.show();
         }
 
@@ -228,7 +228,7 @@ public class MapsV2 extends Fragment {
 
                 // Obteniendo JSON string desde url
                 JSONObject json = jParser.makeHttpRequest(url_todos_alojamientos, "GET", params);
-                JSONObject jsons = jParser.makeHttpRequest(url_todos_servicios, "GET", params);
+                /*JSONObject jsons = jParser.makeHttpRequest(url_todos_servicios, "GET", params);*/
 
 
                 try{
@@ -237,7 +237,7 @@ public class MapsV2 extends Fragment {
                     if (success == 1) {
 
                         alojamiento = json.getJSONArray(TAG_ALOJAMIENTO);
-                        servicio = jsons.getJSONArray(TAG_SERVICIO);
+                        /*servicio = jsons.getJSONArray(TAG_SERVICIO);*/
 
                     } else {
                         //
@@ -263,7 +263,7 @@ public class MapsV2 extends Fragment {
                     for (int i = 0; i < alojamiento.length(); i++) {
                         JSONObject c = alojamiento.getJSONObject(i);
 
-                        for (int x = 0; x < servicio.length(); x++) {
+                        /*for (int x = 0; x < servicio.length(); x++) {
                             JSONObject s = servicio.getJSONObject(x);
 
                             MarkerOptions markers = new MarkerOptions().position(new LatLng(Double.parseDouble(s.getString(TAG_SLATITUD)), Double.parseDouble(s.getString(TAG_SLONGITUD)))).title(s.getString(TAG_NOMBRE_SERVICIO));
@@ -272,7 +272,7 @@ public class MapsV2 extends Fragment {
                                     .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
                             googleMap.addMarker(markers);
-                        }
+                        }*/
 
 
                         MarkerOptions marker = new MarkerOptions().position(

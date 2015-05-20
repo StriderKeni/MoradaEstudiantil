@@ -385,7 +385,6 @@ public class DetalleAlojamiento extends Activity{
             HttpResponse httpResponse = httpClient.execute(httpPost);
             String jsonResult = inputStreamToString(httpResponse.getEntity().getContent()).toString();
             JSONObject jsonObject = new JSONObject(jsonResult);
-            Log.d("Lista alojamientos favoritos: ", jsonResult.toString());
 
             try{
 

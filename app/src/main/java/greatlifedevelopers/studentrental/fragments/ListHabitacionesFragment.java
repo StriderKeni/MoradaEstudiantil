@@ -18,8 +18,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import com.androidquery.AQuery;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -61,6 +64,8 @@ public class ListHabitacionesFragment extends ListFragment {
 
     String idAlojamiento;
 
+
+
     public ListHabitacionesFragment() {
         // Required empty public constructor
     }
@@ -68,7 +73,7 @@ public class ListHabitacionesFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
 
         AlojamientoActivity activity = (AlojamientoActivity) getActivity();
         idAlojamiento = activity.getMyData();
@@ -90,11 +95,11 @@ public class ListHabitacionesFragment extends ListFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String idHabitacion = ((TextView) getActivity().findViewById(R.id.idAlojamientoDetalle)).getText().toString();
+                String idHabitacion = ((TextView) view.findViewById(R.id.idAlojamientoDetalle)).getText().toString();
 
-                Intent dHabitacion = new Intent(getActivity(), DetalleHabitacionActivity.class);
-                dHabitacion.putExtra("idHabitacion", idHabitacion);
-                startActivity(dHabitacion);
+                Intent intentHabitacion = new Intent(getActivity(), DetalleHabitacionActivity.class);
+                intentHabitacion.putExtra("idHabitacion", idHabitacion);
+                startActivity(intentHabitacion);
 
             }
         });

@@ -3,11 +3,9 @@ package greatlifedevelopers.studentrental.fragments;
 /**
  * Created by ecs_kenny on 14-10-14.
  */
-import java.io.IOException;
-import java.io.OutputStream;
+
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,11 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,14 +35,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
 import com.squareup.picasso.Picasso;
 
 import greatlifedevelopers.studentrental.activitys.AlojamientoActivity;
-import greatlifedevelopers.studentrental.activitys.DetalleAlojamiento;
 import greatlifedevelopers.studentrental.data.Constants;
+import greatlifedevelopers.studentrental.data.ImageLoader;
 import greatlifedevelopers.studentrental.data.JSONParser;
 import greatlifedevelopers.studentrental.activitys.MainActivity;
 import greatlifedevelopers.studentrental.R;
@@ -82,6 +84,11 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
 
     public Alojamiento alojamientoClass;
 
+    //AQuery
+    private AQuery aq;
+    private ProgressBar progressBar;
+    public ImageLoader imageLoader;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list_alojamiento, null);
@@ -91,16 +98,18 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        imageLoader = new ImageLoader(this.getActivity().getApplicationContext());
+
+        aq = new AQuery(getActivity());
+        progressBar = (ProgressBar)getActivity().findViewById(R.id.progress);
 
         MainActivity mainActivity = (MainActivity) getActivity();
         idUsuario = mainActivity.getUsuario();
 
         alojamientoClass = new Alojamiento();
 
-
         // obtener listview
         ListView lv = getListView();
-
 
         //pull_to_refresh_attacher = PullToRefreshAttacher.get(this);
 
@@ -114,7 +123,6 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
         // Cargando alojamientos en Background Thread
         new LoadAllProducts().execute();
 
-
         // seleccionando un solo alojamiento de la lista
         // lanzar pantalla VerAlojamientos
         lv.setOnItemClickListener(new OnItemClickListener() {
@@ -125,8 +133,6 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
                 // obteniendo datos de el alojamiento seleccionado
                 String idAlojamiento = ((TextView) view.findViewById(R.id.idAlojamientoDetalle)).getText()
                         .toString();
-
-
 
                 // Iniciando nuevo intent
                 Intent in = new Intent(getActivity(),
@@ -170,7 +176,9 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
             protected Void doInBackground(Void... params) {
                 try{
                     Thread.sleep(3000);
-                }catch (InterruptedException IE) {}
+                }catch (InterruptedException IE) {
+                    IE.getStackTrace();
+                }
 
                 return null;
             }
@@ -213,7 +221,7 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(ListAlojamientoFragment.this.getActivity());
-            pDialog.setMessage("Cargando Alojamientos... Espere por favor.");
+            pDialog.setMessage("Cargando Información... Por favor espere un momento.");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -253,23 +261,9 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
 
                         nombreAlojamiento = c.getString(TAG_NOMBRE);
 
-                        /*
-                        String urlImageAlojamiento = "http://moradaestudiantil.com/web_html/img/Alojamientos/"+idAlojamiento+".jpg";
-                        String defaultImage = "http://moradaestudiantil.com/web_html/img/Alojamientos/sin_alojamiento.jpg";
 
-                        Boolean urlCode = exists(urlImageAlojamiento);
-                        Log.e("CODE URL: ", String.valueOf(urlCode));
 
-                        if(urlCode){
-                            ImageView imageList = (ImageView) getActivity().findViewById(R.id.img_row);
-                            Picasso.with(getActivity()).load(urlImageAlojamiento).into(imageList);
-                        } else {
-                            ImageView imageList = (ImageView) getActivity().findViewById(R.id.img_row);
-                            Picasso.with(getActivity()).load(defaultImage).into(imageList);
-                        }
-                        */
-
-                        try{
+                        /*try{
                             ImageView imageView = (ImageView) getActivity().findViewById(R.id.img_row);
                             idImage = getResources().getIdentifier("alojamiento_" + idAlojamiento, "drawable", getActivity().getPackageName());
                             //Drawable drawable = getResources().getDrawable(idImage);
@@ -277,19 +271,35 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
                         } catch (Resources.NotFoundException e){
                             ImageView imageView = (ImageView) getActivity().findViewById(R.id.img_header);
                             //imageView.setImageResource(R.drawable.hotel1_1);
-                        }
+                        }*/
 
-                        String idImageString = String.valueOf(idImage);
 
+                        String imgId = String.valueOf(idImage);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                final String urlImg = "http://moradaestudiantil.com/web_html/img/Alojamientos/23.jpg";
+
+                                ImageView imageView = (ImageView)getActivity().findViewById(R.id.img_row);
+                                /*Picasso.with(getActivity().getApplicationContext()).load(urlImg).error(R.drawable.hotel2_1).into(imageView);*/
+                            }
+                        });
+
+
+                        /*imageLoader.DisplayImage(urlImg, 0, imageView);*/
+                        /*aq.id(imageView).image(urlImg, true, true, 1, R.drawable.hotel2_1);*/
 
                         // Creando nuevo HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
 
                         // a�adiendo cada nodo a HashMap key => value
-                        map.put("imageList", idImageString);
+                        map.put(TAG_IMAGE, "url");
                         map.put(TAG_ID, idAlojamiento);
                         map.put(TAG_NOMBRE, nombre);
                         map.put(TAG_FECHA, fechaIngreso);
+
 
                         // a�adiendo HashList a ArrayList
                         productsList.add(map);
@@ -365,12 +375,17 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
                      * Actualizando parsed JSON data a ListView
                      * */
 
+
+
+                    Log.d("URL IMAGE: ", TAG_IMAGE);
+
+
                      ListAdapter adapter = new SimpleAdapter(
                             ListAlojamientoFragment.this.getActivity(), productsList,
-                            R.layout.lista_items, new String[]{"imageList", TAG_NOMBRE,
+                            R.layout.lista_items, new String[]{TAG_IMAGE, TAG_NOMBRE,
                             TAG_FECHA, TAG_ID},
                             new int[]{R.id.img_row, R.id.idAlojamiento, R.id.nombre, R.id.idAlojamientoDetalle});
-                    // actualizando listview
+
                     setListAdapter(adapter);
                 }
             });
@@ -378,7 +393,6 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
         }
 
     }
-
 
     public static boolean exists(String URLName){
         try {
@@ -395,7 +409,5 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
             return false;
         }
     }
-
-
 
 }

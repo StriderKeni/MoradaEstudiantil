@@ -130,7 +130,8 @@ public class MainActivity extends FragmentActivity implements ListView.OnItemCli
 
         switch (item.getItemId()){
             case R.id.action_perfil:
-                Intent perfil = new Intent(this, ProfileActivity.class);
+                Intent perfil = new Intent(this, UserActivity.class);
+                perfil.putExtra("id_usuario", idUsuario);
                 startActivity(perfil);
                 return true;
         }
@@ -185,41 +186,8 @@ public class MainActivity extends FragmentActivity implements ListView.OnItemCli
 
     }
 
-
     public String getUsuario(){
         return idUsuario;
     }
-
-
-    /*private class LoadProfileImage extends AsyncTask<String, Void, Bitmap>{
-        ImageView imageView;
-
-        public LoadProfileImage(ImageView imageView){
-            this.imageView = imageView;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e){
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            imageView.setImageBitmap(result);
-        }
-    }*/
-
-
-
-
 
 }

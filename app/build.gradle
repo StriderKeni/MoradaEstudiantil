@@ -42,6 +42,11 @@ dependencies {
     compile project(':libraries:ActionBar-PullToRefresh')
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
+    compile fileTree(dir: 'libs', include: 'android-query-full.*.jar')
+    compile 'it.sephiroth.android.library.imagezoom:imagezoom:+'
+    compile fileTree(dir: 'libs', include: 'urlimageviewhelper-*.jar')
     compile fileTree(dir: 'libs', include: 'universal-image-loader-*.jar')
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.squareup.picasso:picasso:2.5.2'
+
 }

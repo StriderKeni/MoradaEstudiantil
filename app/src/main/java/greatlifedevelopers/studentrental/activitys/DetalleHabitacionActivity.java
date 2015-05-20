@@ -1,18 +1,33 @@
 package greatlifedevelopers.studentrental.activitys;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -20,6 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +48,7 @@ import greatlifedevelopers.studentrental.data.JSONParser;
 
 public class DetalleHabitacionActivity extends Activity {
 
-    String idHabitacion;
+    String idHabitacion, idAlojamiento;
     ProgressDialog progressDialog;
 
     JSONParser jsonParser = new JSONParser();
@@ -50,10 +69,16 @@ public class DetalleHabitacionActivity extends Activity {
     private static final String TAG_DESC_HAB = "descripcion";
     private static final String TAG_SERV_HAB = "servicio_habitacion";
     private static final String TAG_ESTACIONAMIENTO = "estacionamiento";
+    private static final String TAG_ID_ALOJAMIENTO = "id_alojamiento";
 
     TextView txtTipoHab, txtPrecio, txtTipoCama, txtDescHab;
     ImageView imgInternet, imgTv, imgBanoP, imgBanoC, imgDesayuno, imgAlmuerzo, imgOnce, imgCena, imgEstacionamiento, imgLavanderia, imgServicioH;
-    String internet, tvcable, banop, banoc, desayuno, almuerzo, once, cena, estacionamiento, lavanderia, servicioHab;
+    String internet, banop, banoc, desayuno, almuerzo, once, cena, estacionamiento, lavanderia, servicioHab, urlImg1, urlImg2, urlImg3, urlImg4;
+
+
+    //AQuery
+    private AQuery aq;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -61,8 +86,13 @@ public class DetalleHabitacionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_habitacion);
 
+
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //AQuery
+        aq = new AQuery(this);
+        progressBar = (ProgressBar)findViewById(R.id.progress);
 
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -72,7 +102,6 @@ public class DetalleHabitacionActivity extends Activity {
         idHabitacion = getIdHabitacion.getStringExtra("idHabitacion");
 
         new GetDetailsHabitacion().execute();
-
 
     }
 
@@ -96,7 +125,7 @@ public class DetalleHabitacionActivity extends Activity {
 
                     int success;
 
-                    try{
+                    try {
 
                         List<NameValuePair> params = new ArrayList<NameValuePair>();
                         params.add(new BasicNameValuePair("id_habitacion", idHabitacion));
@@ -106,7 +135,7 @@ public class DetalleHabitacionActivity extends Activity {
                         Log.d("Detalle Habitacion: ", jsonObject.toString());
 
                         success = jsonObject.getInt(TAG_SUCCESS);
-                        if (success==1){
+                        if (success == 1) {
                             JSONArray habitacionObj = jsonObject.getJSONArray(TAG_ALOJAMIENTO);
                             JSONObject habitacion = habitacionObj.getJSONObject(0);
 
@@ -127,6 +156,7 @@ public class DetalleHabitacionActivity extends Activity {
                             imgServicioH = (ImageView) findViewById(R.id.img_serv_habitacion);
                             String precio = "$ " + habitacion.getString(TAG_PRECIO);
 
+
                             txtTipoHab.setText(habitacion.getString(TAG_TIPO_HABITACION));
                             txtPrecio.setText(precio);
                             txtTipoCama.setText(habitacion.getString(TAG_TIPO_CAMA));
@@ -143,62 +173,137 @@ public class DetalleHabitacionActivity extends Activity {
                             lavanderia = habitacion.getString(TAG_LAVANDERIA);
                             servicioHab = habitacion.getString(TAG_SERV_HAB);
 
+                            idAlojamiento = habitacion.getString(TAG_ID_ALOJAMIENTO);
 
-                            if(internet.equalsIgnoreCase("1")){
+
+                            for (int i = 1; i <= 4; i++) {
+
+                                String urlImage = "http://moradaestudiantil.com/web_html/img/Habitaciones/" + idAlojamiento + "/" + idHabitacion + "/" + (i) + ".jpg";
+                                switch (i){
+                                    case 1:
+                                        aq.id(R.id.thumb_button_1).progress(R.id.progress).image(urlImage, false, false, 0, R.drawable.hotel2_1);
+                                        urlImg1 = urlImage;
+                                        break;
+                                    case 2:
+                                        aq.id(R.id.thumb_button_2).progress(R.id.progress).image(urlImage, false, false, 0, R.drawable.hotel2_1);
+                                        urlImg2 = urlImage;
+                                        break;
+                                    case 3:
+                                        aq.id(R.id.thumb_button_3).progress(R.id.progress2).image(urlImage, false, false, 0, R.drawable.hotel2_1);
+                                        urlImg3 = urlImage;
+                                        break;
+                                    case 4:
+                                        aq.id(R.id.thumb_button_4).progress(R.id.progress2).image(urlImage, false, false, 0, R.drawable.hotel2_1);
+                                        urlImg4 = urlImage;
+                                        break;
+                                }
+
+                            }
+
+
+                            //Zoom ImageView
+                            final View thumblView = findViewById(R.id.thumb_button_1);
+                            thumblView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    Intent intent = new Intent(DetalleHabitacionActivity.this, FullScreenActivity.class);
+                                    intent.putExtra("url_img", urlImg1);
+                                    startActivity(intent);
+
+                                }
+                            });
+
+                            final View thumblView2 = findViewById(R.id.thumb_button_2);
+                            thumblView2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View a) {
+
+                                    Intent intent = new Intent(DetalleHabitacionActivity.this, FullScreenActivity.class);
+                                    intent.putExtra("url_img", urlImg2);
+                                    startActivity(intent);
+                                }
+                            });
+
+                            final View thumblView3 = findViewById(R.id.thumb_button_3);
+                            thumblView3.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View b) {
+
+                                    Intent intent = new Intent(DetalleHabitacionActivity.this, FullScreenActivity.class);
+                                    intent.putExtra("url_img", urlImg3);
+                                    startActivity(intent);
+                                }
+                            });
+
+                            final View thumblView4 = findViewById(R.id.thumb_button_4);
+                            thumblView4.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View c) {
+
+                                    Intent intent = new Intent(DetalleHabitacionActivity.this, FullScreenActivity.class);
+                                    intent.putExtra("url_img", urlImg4);
+                                    startActivity(intent);
+                                }
+                            });
+
+                            //
+
+                            if (internet.equalsIgnoreCase("1")) {
                                 imgInternet.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgInternet.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if(banop.equalsIgnoreCase("1")){
+                            if (banop.equalsIgnoreCase("1")) {
                                 imgBanoP.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgBanoP.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if(banoc.equalsIgnoreCase("1")){
+                            if (banoc.equalsIgnoreCase("1")) {
                                 imgBanoC.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgBanoC.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if(desayuno.equalsIgnoreCase("1")){
+                            if (desayuno.equalsIgnoreCase("1")) {
                                 imgDesayuno.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgDesayuno.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if (almuerzo.equalsIgnoreCase("1")){
+                            if (almuerzo.equalsIgnoreCase("1")) {
                                 imgAlmuerzo.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgAlmuerzo.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if (once.equalsIgnoreCase("1")){
+                            if (once.equalsIgnoreCase("1")) {
                                 imgOnce.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgOnce.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if (cena.equalsIgnoreCase("1")){
+                            if (cena.equalsIgnoreCase("1")) {
                                 imgCena.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgCena.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if (estacionamiento.equalsIgnoreCase("1")){
+                            if (estacionamiento.equalsIgnoreCase("1")) {
                                 imgEstacionamiento.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgEstacionamiento.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if (lavanderia.equalsIgnoreCase("1")){
+                            if (lavanderia.equalsIgnoreCase("1")) {
                                 imgLavanderia.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgLavanderia.setImageResource(R.drawable.ic_action_cancel);
                             }
 
-                            if (servicioHab.equalsIgnoreCase("1")){
+                            if (servicioHab.equalsIgnoreCase("1")) {
                                 imgServicioH.setImageResource(R.drawable.ic_action_tick);
                             } else {
                                 imgServicioH.setImageResource(R.drawable.ic_action_cancel);
@@ -207,7 +312,7 @@ public class DetalleHabitacionActivity extends Activity {
                         }
 
 
-                    } catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -223,6 +328,7 @@ public class DetalleHabitacionActivity extends Activity {
             progressDialog.dismiss();
         }
     }
+
 
 
 }

@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--<uses-permission android:name="greatlifedevelopers.studentrental.mapav2.permission.C2D_MESSAGE" />-->
+    <!-- <uses-permission android:name="greatlifedevelopers.studentrental.mapav2.permission.C2D_MESSAGE" /> -->
     <uses-permission android:name="com.google.android.c2m.permission.RECEIVE" />
     <uses-permission android:name="greatlifedevelopers.studentrental.mapav2.permission.MAPS_RECEIVE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -22,8 +22,6 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -34,32 +32,42 @@
       IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
-    <permission android:protectionLevel="signature"
-        android:name="greatlifedevelopers.studentrental.permission.C2D_MESSAGE" />
-    <uses-permission android:name="greatlifedevelopers.studentrental.permission.C2D_MESSAGE" />
+    <permission
+        android:name="greatlifedevelopers.studentrental.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
+    <uses-permission android:name="greatlifedevelopers.studentrental.permission.C2D_MESSAGE" />
 
     <permission
         android:name="greatlifedevelopers.studentrental.mapav2.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
-    <!--<permission
+    <!--
+        <permission
         android:name="greatlifedevelopers.studentrental.mapav2.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />-->
+        android:protectionLevel="signature" />
+    -->
+
 
     <!-- opengl para maps -->
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
+    <permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
+
     <application
+        android:name=".data.ParsePushApplication"
         android:allowBackup="true"
         android:icon="@drawable/icono_student_rental"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"
-        android:theme="@style/CustomActionBarTheme"
-        android:name=".data.ParsePushApplication">
-
+        android:theme="@style/CustomActionBarTheme" >
         <activity
             android:name=".activitys.MainActivity"
             android:label="Student Rental" >
@@ -70,7 +78,7 @@
         </activity>
         <activity
             android:name=".activitys.ListBusquedaActivity"
-            android:label="Busqueda Personalizada">
+            android:label="Busqueda Personalizada" >
         </activity>
         <activity
             android:name=".Login"
@@ -99,8 +107,7 @@
         <activity
             android:name=".activitys.ProfileActivity"
             android:label="Perfil de Usuario"
-            android:parentActivityName=".activitys.MainActivity">
-
+            android:parentActivityName=".activitys.MainActivity" >
         </activity>
         <activity
             android:name=".activitys.SignUpRegister"
@@ -128,39 +135,38 @@
 
         <activity
             android:name=".activitys.AlojamientoActivity"
-            android:label="Detalles Alojamiento">
-
+            android:label="Detalles Alojamiento" >
         </activity>
         <activity
             android:name=".activitys.DetalleHabitacionActivity"
             android:label="Detalles Habitación"
-            android:parentActivityName=".activitys.MainActivity">
+            android:parentActivityName=".activitys.MainActivity" >
         </activity>
 
         <!-- Parse Push Notifications -->
 
         <service android:name="com.parse.PushService" />
-            <receiver android:name="com.parse.ParseBroadcastReceiver">
-                <intent-filter>
-                    <action android:name="android.intent.action.BOOT_COMPLETED" />
-                    <action android:name="android.intent.action.USER_PRESENT" />
-                </intent-filter>
-            </receiver>
 
-
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+        <receiver android:name="com.parse.ParseBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <!--
-                  IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name.
-                -->
+                <!-- IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name. -->
                 <category android:name="greatlifedevelopers.studentrental" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.parse.ParsePushBroadcastReceiver" android:exported="false">
+        <receiver
+            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
@@ -168,7 +174,18 @@
             </intent-filter>
         </receiver>
 
-
+        <activity
+            android:name=".activitys.UserActivity"
+            android:label="@string/title_activity_user" >
+        </activity>
+        <activity
+            android:name=".activitys.ContrasenaActivity"
+            android:label="@string/title_activity_contrasena" >
+        </activity>
+        <activity
+            android:name=".activitys.FullScreenActivity"
+            android:label="@string/title_activity_full_screen" >
+        </activity>
     </application>
 
 </manifest>

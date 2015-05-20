@@ -17,7 +17,7 @@ public class TermsFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		web_view.loadUrl("http://172.20.10.2/student/index.php");
+		web_view.loadUrl("http://www.moradaestudiantil.com");
 		web_view.setWebViewClient(new WebViewClient(){
 			@Override
 		    public boolean shouldOverrideUrlLoading(WebView view, String url) {

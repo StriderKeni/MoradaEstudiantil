@@ -73,6 +73,12 @@
         <item>4</item>
     </string-array>
 
+    <string-array name="genero_array">
+        <item>Seleccionar</item>
+        <item>Femenino</item>
+        <item>Masculino</item>
+    </string-array>
+
     <!-- Button text Google+ -->
     <string name="btn_logout_from_google">Cerrar Sesión de Google</string>
     <string name="btn_revoke_access">Revocar Acceso</string>
@@ -102,5 +108,8 @@
 
     <string name="title_activity_alojamiento">AlojamientoActivity</string>
     <string name="title_activity_detalle_habitacion">DetalleHabitacionActivity</string>
+    <string name="title_activity_user">Perfil de Usuario</string>
+    <string name="title_activity_contrasena">ContrasenaActivity</string>
+    <string name="title_activity_full_screen">FullScreenActivity</string>
 
 </resources>

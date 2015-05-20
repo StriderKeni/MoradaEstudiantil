@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/black"
+    android:layout_gravity="center" >
+
+
+    <greatlifedevelopers.studentrental.data.TouchImageView
+        android:id="@+id/img_full_screen"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/hello_world"
+        android:src="@android:color/black"
+        android:scaleType="centerInside"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cerrar"
+        android:textColor="@color/Color_8"
+        android:id="@+id/btn_close"
+        android:layout_alignTop="@+id/img_full_screen"
+        android:layout_alignRight="@+id/img_full_screen"
+        android:layout_alignEnd="@+id/img_full_screen" />
+
+
+
+</RelativeLayout>
