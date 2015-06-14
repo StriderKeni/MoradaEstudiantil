@@ -28,6 +28,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -40,20 +42,24 @@ import java.util.List;
 
 import greatlifedevelopers.studentrental.R;
 import greatlifedevelopers.studentrental.data.Constants;
+import greatlifedevelopers.studentrental.data.JSONParser;
 
 public class SignUpRegister extends ActionBarActivity {
 
 
-    ProgressDialog progressDialog;
-
-    //
+    ProgressDialog progressDialog, pDialog;
 
     EditText editEmail, editNombre, editApellido, editRut, editContrasena, editMovil;
 
     private static final String URL_REGISTER_PERSONA = Constants.URL_DOMINIO + "register_persona.php";
+    private static final String URL_REGISTER_USER = Constants.URL_DOMINIO + "register_user.php";
 
 
     Button btnRegister;
+    String rutUsuario;
+
+    JSONParser jsonParser = new JSONParser();
+
 
     private static final String TAG = "SignUpRegister";
 
@@ -81,59 +87,40 @@ public class SignUpRegister extends ActionBarActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new RegisterUsuario(SignUpRegister.this).execute();
+                if (!editRut.getText().equals("") || !editNombre.getText().equals("") || !editApellido.getText().equals("") ||
+                        !editEmail.getText().equals("") || !editContrasena.getText().equals("") || !editMovil.getText().equals("")){
+
+                    if(editContrasena.getText().length()>=6) {
+                        new RegisterUsuario(SignUpRegister.this).execute();
+                    } else {
+                        new AlertDialog.Builder(SignUpRegister.this)
+                                .setTitle("Error")
+                                .setMessage("La contraseña debe ser igual o mayor a 6 caracteres." + "\n \nPor favor vuelve a intentarlo.")
+                                .setCancelable(false)
+                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent mainActivity = new Intent(SignUpRegister.this, LoginActivity.class);
+                                        startActivity(mainActivity);
+                                    }
+                                }).create().show();
+
+                    }
+                } else {
+                    new AlertDialog.Builder(SignUpRegister.this)
+                            .setTitle("Error")
+                            .setMessage("Los campos se encuentran en blanco, o el formato ingresado no es el correcto." + "\n \nPor favor vuelve a intentarlo.")
+                            .setCancelable(false)
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent mainActivity = new Intent(SignUpRegister.this, LoginActivity.class);
+                                    startActivity(mainActivity);
+                                }
+                            }).create().show();
+                }
             }
         });
-
-
-        /*Intent registerData = getIntent();
-        emailUsuario = registerData.getStringExtra("emailUsuario");
-        nameUsuario = registerData.getStringExtra("nameUsuario");
-        middleNameUsuario = registerData.getStringExtra("middleNameUsuario");
-        birthdayUsuario = registerData.getStringExtra("birthdayUsuario");
-        genderUsuario = registerData.getIntExtra("genderUsuario", 0);
-
-        editEmail = (EditText) findViewById(R.id.edit_email);
-        editName = (EditText) findViewById(R.id.edit_nombre);
-        editMiddleName = (EditText) findViewById(R.id.edit_apellido);
-        editBirthday = (EditText) findViewById(R.id.edit_nacimiento);
-        Spinner comunaSpinner = (Spinner) findViewById(R.id.spinner_comuna_registro);
-        Spinner generoSpinner = (Spinner) findViewById(R.id.spinner_genero);
-
-        editEmail.setText(emailUsuario);
-        editName.setText(nameUsuario);
-        editMiddleName.setText(middleNameUsuario);
-        editBirthday.setText(birthdayUsuario);
-
-        final String genero;
-        switch (genderUsuario){
-            case 0:
-                genero = "Masculino";
-                break;
-            case 1:
-                genero = "Femenino";
-                break;
-            case 2:
-                genero = "Otro";
-                break;
-            default:
-                genero = "Seleccionar";
-        }
-
-
-        //Listener Button Register
-        btnRegister = (Button) findViewById(R.id.btn_registrar);
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new RegisterUsuario(SignUpRegister.this).execute();
-            }
-        });
-
-        */
-
-
 
     }
 
@@ -189,7 +176,7 @@ public class SignUpRegister extends ActionBarActivity {
         httpPost = new HttpPost(URL_REGISTER_PERSONA);
         listRegisterUsuario = new ArrayList<NameValuePair>(6);
 
-        String rutUsuario = editRut.getText().toString();
+        rutUsuario = editRut.getText().toString();
         String nombreUsuario = editNombre.getText().toString();
         String apellidoUsuario = editApellido.getText().toString();
         String emailUsuario = editEmail.getText().toString();
@@ -241,29 +228,13 @@ public class SignUpRegister extends ActionBarActivity {
             progressDialog.setIndeterminate(false);
             progressDialog.setCancelable(false);
             progressDialog.show();
+
         }
 
         @Override
         protected String doInBackground(String... params) {
             if(RegistrarUsuario()){
-                context.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
 
-                        new AlertDialog.Builder(SignUpRegister.this)
-                                .setTitle("Registro Exitoso")
-                                .setMessage("¡Felicidades! Te has registrado exitosamente. Vuelve a iniciar sesión para disfrutar de Morada Estudiantil")
-                                .setCancelable(false)
-                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent mainActivity = new Intent(SignUpRegister.this, LoginActivity.class);
-                                        startActivity(mainActivity);
-                                    }
-                                }).create().show();
-
-                    }
-                });
             } else {
                 context.runOnUiThread(new Runnable() {
                     @Override
@@ -280,9 +251,88 @@ public class SignUpRegister extends ActionBarActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressDialog.dismiss();
+
+            new loadUser().execute();
         }
     }
 
+    class loadUser extends AsyncTask<String, String, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
+            pDialog = new ProgressDialog(SignUpRegister.this);
+            pDialog.setMessage("Verificando Información... Por favor espere.");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("rut_usuario", rutUsuario));
+
+            JSONObject json = jsonParser.makeHttpRequest(URL_REGISTER_USER, "POST", params);
+
+            try{
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        new AlertDialog.Builder(SignUpRegister.this)
+                                .setTitle("¡Felicidades!")
+                                .setMessage("Te has registrado exitosamente." + "\n \nVuelve a iniciar sesión para disfrutar de las opciones que brinda Morada Estudiantil")
+                                .setCancelable(false)
+                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent mainActivity = new Intent(SignUpRegister.this, LoginActivity.class);
+                                        startActivity(mainActivity);
+                                    }
+                                }).create().show();
+
+                    }
+                });
+
+            } catch (Exception e){
+                e.printStackTrace();
+
+                pDialog.dismiss();
+                e.printStackTrace();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        final AlertDialog.Builder alert = new AlertDialog.Builder(SignUpRegister.this);
+                        alert.setTitle("¡Error!");
+                        alert.setMessage("Revisa la conexión de red o vuelve a intentarlo más tarde.");
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        alert.create().show();
+
+                    }
+                });
+
+            }
+
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            pDialog.dismiss();
+        }
+    }
 
 }

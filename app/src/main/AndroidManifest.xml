@@ -2,11 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="greatlifedevelopers.studentrental"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.5" >
 
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="20" />
+
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -28,25 +29,23 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+
+
+
     <!--
       IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
+
     <permission
         android:name="greatlifedevelopers.studentrental.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-
     <uses-permission android:name="greatlifedevelopers.studentrental.permission.C2D_MESSAGE" />
 
     <permission
         android:name="greatlifedevelopers.studentrental.mapav2.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
-
-    <!--
-        <permission
-        android:name="greatlifedevelopers.studentrental.mapav2.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    -->
+    <uses-permission android:name="greatlifedevelopers.studentrental.mapav2.permission.MAPS_RECEIVE" />
 
 
     <!-- opengl para maps -->
@@ -64,13 +63,16 @@
     <application
         android:name=".data.ParsePushApplication"
         android:allowBackup="true"
-        android:icon="@drawable/icono_student_rental"
+        android:icon="@drawable/logo_moradaestudiantil"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"
-        android:theme="@style/CustomActionBarTheme" >
+        android:theme="@style/Theme.Example" >
+
+
         <activity
             android:name=".activitys.MainActivity"
-            android:label="Student Rental" >
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="Morada Estudiantil" >
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" >
@@ -82,19 +84,7 @@
         </activity>
         <activity
             android:name=".Login"
-            android:label="Student Rental" >
-        </activity>
-        <activity
-            android:name=".HiScreen"
-            android:label="Student Rental" >
-        </activity>
-        <activity
-            android:name=".activitys.Favorito"
-            android:label="Favoritos" >
-        </activity>
-        <activity
-            android:name=".activitys.DetalleAlojamiento"
-            android:label="Detalle Alojamiento" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.facebook.LoginActivity"
@@ -103,11 +93,6 @@
         <activity
             android:name=".activitys.LoginActivity"
             android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".activitys.ProfileActivity"
-            android:label="Perfil de Usuario"
-            android:parentActivityName=".activitys.MainActivity" >
         </activity>
         <activity
             android:name=".activitys.SignUpRegister"
@@ -123,6 +108,7 @@
             </intent-filter>
         </activity>
 
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyArXK1ngAtFZsZpV1sBrcUu49kAONQY7Sg" />
@@ -135,57 +121,60 @@
 
         <activity
             android:name=".activitys.AlojamientoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="Detalles Alojamiento" >
         </activity>
         <activity
             android:name=".activitys.DetalleHabitacionActivity"
             android:label="Detalles Habitación"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:parentActivityName=".activitys.MainActivity" >
         </activity>
 
-        <!-- Parse Push Notifications -->
+
 
         <service android:name="com.parse.PushService" />
-
-        <receiver android:name="com.parse.ParseBroadcastReceiver" >
+        <receiver android:name="com.parse.ParseBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+        <receiver android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <!-- IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name. -->
+                <!--
+                  IMPORTANT: If you change the package name of this sample app,
+                  change "com.parse.tutorials.pushnotifications" in the lines
+                  below to match the new package name.
+                -->
                 <category android:name="greatlifedevelopers.studentrental" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
-            </intent-filter>
-        </receiver>
+
+
+
 
         <activity
             android:name=".activitys.UserActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_user" >
         </activity>
         <activity
             android:name=".activitys.ContrasenaActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_contrasena" >
         </activity>
         <activity
             android:name=".activitys.FullScreenActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_full_screen" >
         </activity>
+
+
     </application>
 
 </manifest>

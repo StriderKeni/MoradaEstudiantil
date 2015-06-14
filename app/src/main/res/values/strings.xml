@@ -15,7 +15,7 @@
     <string name="action_fav">Favorito</string>
     <string name="action_share">Compartir</string>
     <string name="action_not_fav">No Favorito</string>
-    <string name="share">Las mejores ofertas de alojamientos las encuentras Aqui en Student Rental</string>
+    <string name="share">Las mejores ofertas de alojamientos las encuentras Aquí en Student Rental</string>
     <string name="action_dialog">Mostrar Dialogo</string>
     <string name="img_description">Encabezado</string>
     <string name="hello_world">Hello world!</string>
@@ -24,8 +24,8 @@
     <string name="title_activity_buscar">Buscar</string>
     <string name="favorito">Favoritos</string>
     <string name="title_activity_favorito">Favoritos</string>
-    <string name="title_activity_busqueda_rapida">Busqueda Rapida</string>
-    <string name="busquedarapida">Busqueda Rapida</string>
+    <string name="title_activity_busqueda_rapida">Búsqueda Rapida</string>
+    <string name="busquedarapida">Búsqueda Rapida</string>
     <string name="mapa">Mapa</string>
 
     <string-array name="comuna_spinner">
@@ -84,7 +84,7 @@
     <string name="btn_revoke_access">Revocar Acceso</string>
     <string name="title_activity_login">Iniciar Sesión</string>
     <string name="title_activity_sign_up_register">Registrar</string>
-    <string name="app_name">Student Rental</string>
+    <string name="app_name">Morada Estudiantil</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="title_activity_login_activity2">LoginActivity2</string>
     <string name="title_activity_register">RegisterActivity</string>

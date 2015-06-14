@@ -7,7 +7,7 @@
     -->
     <ListView
         android:id="@android:id/list"
-        android:textColor="@color/pressed_text"
+        android:textColor="@color/app_red_2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

@@ -4,6 +4,19 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+
+    <ProgressBar
+        android:layout_width="30dp"
+        android:layout_height="80dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:id="@+id/progress"
+        android:progressDrawable="@drawable/progress_bar"
+        android:layout_centerInParent="true"
+        />
+
     <ImageView
         android:contentDescription="@string/img_description"
         android:id="@+id/img_row"
@@ -13,7 +26,6 @@
         android:paddingRight="10dp"
         android:layout_weight="1"
         android:src="@drawable/hotel1_1" />
-
 
 
     <LinearLayout
@@ -30,6 +42,22 @@
 
         <TextView
             android:id="@+id/idAlojamientoDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/id_latitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/id_longitud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"

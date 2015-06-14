@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+
 <color name="Color_1">#6dcaec</color>
 <color name="Color_2">#6da000</color>
 <color name="Color_3">#99cc00</color>
@@ -17,4 +18,5 @@
 <color name="Color_15">#a8dff4</color>
 <color name="Color_16">#DD0000</color>
 <color name="Color_17">#2683c2</color>
+
 </resources>

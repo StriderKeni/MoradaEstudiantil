@@ -21,7 +21,7 @@ public class AlojamientoActivity extends FragmentActivity implements ActionBar.T
     private String[] tabs = {"Detalles", "Lista", "Mapa"};
 
     //
-    String nombreAlojamiento, idUsuario;
+    String nombreAlojamiento, idUsuario, latitud, longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,8 @@ public class AlojamientoActivity extends FragmentActivity implements ActionBar.T
         Intent dataAlojamiento = getIntent();
         nombreAlojamiento = dataAlojamiento.getStringExtra("tagid");
         idUsuario = dataAlojamiento.getStringExtra("id_usuario");
+        latitud = dataAlojamiento.getStringExtra("latitud");
+        longitud = dataAlojamiento.getStringExtra("longitud");
 
 
         /*DetalleAlojamientoFragment frag = new DetalleAlojamientoFragment();
@@ -78,6 +80,14 @@ public class AlojamientoActivity extends FragmentActivity implements ActionBar.T
 
     public String getDataUsuario(){
         return idUsuario;
+    }
+
+    public String getLatitud(){
+        return latitud;
+    }
+
+    public String getLongitud(){
+        return longitud;
     }
 
 

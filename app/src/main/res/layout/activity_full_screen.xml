@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cerrar"
-        android:textColor="@color/Color_8"
+        android:textColor="@color/white"
         android:id="@+id/btn_close"
         android:layout_alignTop="@+id/img_full_screen"
         android:layout_alignRight="@+id/img_full_screen"

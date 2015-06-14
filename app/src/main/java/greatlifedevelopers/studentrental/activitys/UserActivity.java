@@ -451,7 +451,11 @@ public class UserActivity extends Activity {
                                 edtMovil.setText(usuario.getString(TAG_MOVIL));
                                 genero = usuario.getString(TAG_GENERO);
 
-                                generoInt = Integer.valueOf(genero);
+                                try {
+                                    generoInt = Integer.valueOf(genero);
+                                } catch (NumberFormatException e){
+                                    generoInt = 0;
+                                }
 
                                 generoSpinner.setSelection(generoInt);
 

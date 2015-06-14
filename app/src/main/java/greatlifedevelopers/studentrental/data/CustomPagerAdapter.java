@@ -4,10 +4,8 @@ package greatlifedevelopers.studentrental.data;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
-import greatlifedevelopers.studentrental.fragments.GridAlojamientoFragment;
 import greatlifedevelopers.studentrental.fragments.ListAlojamientoFragment;
-import greatlifedevelopers.studentrental.fragments.MapsV2;
+import greatlifedevelopers.studentrental.fragments.MapsV2General;
 
 public class CustomPagerAdapter extends FragmentStatePagerAdapter {
     private Fragment[] fragments;
@@ -17,7 +15,7 @@ public class CustomPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         fragments = new Fragment[]{
                 new ListAlojamientoFragment(),
-                new MapsV2()
+                new MapsV2General()
         };
     }
 

@@ -9,5 +9,8 @@
     <dimen name="layer_padding">1dp</dimen>
     <dimen name="button_height">50dp</dimen>
     <dimen name="half_button_height">25dp</dimen>
+    <dimen name="custom_profile_image">40dp</dimen>
+    <dimen name="custom_profile_padding">0dp</dimen>
+
 
 </resources>

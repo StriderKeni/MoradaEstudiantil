@@ -2,36 +2,28 @@ package greatlifedevelopers.studentrental.activitys;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
-import com.parse.PushService;
-
-import java.io.InputStream;
 
 import greatlifedevelopers.studentrental.R;
 import greatlifedevelopers.studentrental.fragments.BusquedaAlojamientoFragment;
 import greatlifedevelopers.studentrental.fragments.ListFavoritosFragment;
 import greatlifedevelopers.studentrental.fragments.MainFragment;
 import greatlifedevelopers.studentrental.fragments.ManualFragment;
-import greatlifedevelopers.studentrental.fragments.MapsV2;
+import greatlifedevelopers.studentrental.fragments.MapsV2General;
 import greatlifedevelopers.studentrental.fragments.TermsFragment;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 
@@ -44,8 +36,7 @@ public class MainActivity extends FragmentActivity implements ListView.OnItemCli
     private DrawerLayout drawer_layout;
     private ActionBarDrawerToggle drawer_toggle;
     private PullToRefreshAttacher pull_to_refresh_attacher;
-    String urlImageProfile, idUsuario, contrasena;
-    ImageView imgViewProfile;
+    String idUsuario, contrasena;
 
 
     @Override
@@ -57,10 +48,9 @@ public class MainActivity extends FragmentActivity implements ListView.OnItemCli
 
         // To track statistics around application
         ParseAnalytics.trackAppOpened(getIntent());
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         // inform the Parse Cloud that it is ready for notifications
-        PushService.setDefaultPushCallback(this, MainActivity.class);
-        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         /* Finish Parse */
 
@@ -151,7 +141,7 @@ public class MainActivity extends FragmentActivity implements ListView.OnItemCli
                 f = new ListFavoritosFragment();
                 break;
             case 3:
-                f = new MapsV2();
+                f = new MapsV2General();
                 break;
             case 4:
                 f = new TermsFragment();

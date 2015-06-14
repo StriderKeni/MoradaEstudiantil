@@ -95,7 +95,6 @@ public class DetalleAlojamientoFragment extends Fragment {
 
     //
     TextView nombreAlojamiento, propietario, correoPropietario, movilAlojamiento, direccionAlojamiento, descripcionAlojamiento, reglasAlojamiento;
-    ImageButton imageAlojamiento1;
 
     private MenuItem item;
 
@@ -470,7 +469,8 @@ public class DetalleAlojamientoFragment extends Fragment {
         httpClient = new DefaultHttpClient();
         httpPost = new HttpPost(URL_INSERT_FAVORITOS);
 
-        nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("id_usuario", idUsuario));
         nameValuePairs.add(new BasicNameValuePair("id_alojamiento",idAlojamiento));
 
         try{
@@ -525,7 +525,8 @@ public class DetalleAlojamientoFragment extends Fragment {
         httpClient = new DefaultHttpClient();
         httpPost = new HttpPost(URL_DELETE_FAVORITOS);
 
-        nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("id_usuario", idUsuario));
         nameValuePairs.add(new BasicNameValuePair("id_alojamiento", idAlojamiento));
 
         try{

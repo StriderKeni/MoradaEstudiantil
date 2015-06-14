@@ -13,12 +13,18 @@
     <color name="app_green_4">#97B393</color>
     <color name="app_green_5">#B1C6AD</color>
 
+    <color name="white">#f0f8db</color>
+
+
+
 
 
     <color name="actionbar_text">#FFFFFF</color>
     <color name="stacker_bar">#2E9AFE</color>
     <color name="background_bar">#2E9AFE</color>
     <color name="split_bar">#81DAF5</color>
+
+    <!--
 
     <color name="normal_start">#2E9AFE</color>
     <color name="normal_end">#2E9AFE</color>
@@ -56,6 +62,6 @@
     <color name="disabled_and_focused_border">#000000</color>
     <color name="disabled_and_focused_text">#B27E6B</color>
     <color name="disabled_and_focused_start_multi">#F2E08F</color>
-    <color name="disabled_and_focused_end_multi">#EAC896</color>
+    <color name="disabled_and_focused_end_multi">#EAC896</color> -->
 
 </resources>

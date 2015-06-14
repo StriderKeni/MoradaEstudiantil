@@ -4,6 +4,9 @@ package greatlifedevelopers.studentrental.fragments;
  * Created by ecs_kenny on 14-10-14.
  */
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -16,53 +19,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
-import com.androidquery.AQuery;
-import com.squareup.picasso.Picasso;
-
 import greatlifedevelopers.studentrental.activitys.AlojamientoActivity;
 import greatlifedevelopers.studentrental.data.Constants;
-import greatlifedevelopers.studentrental.data.ImageLoader;
 import greatlifedevelopers.studentrental.data.JSONParser;
 import greatlifedevelopers.studentrental.activitys.MainActivity;
 import greatlifedevelopers.studentrental.R;
-import greatlifedevelopers.studentrental.models.Alojamiento;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 
-public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
+public class ListAlojamientoFragment extends android.support.v4.app.Fragment
                     implements PullToRefreshAttacher.OnRefreshListener{
 
-    //Mensaje de carga Progress Dialog
     private ProgressDialog pDialog;
 
     private PullToRefreshAttacher pull_to_refresh_attacher;
 
-    //Creando JSON Parser objeto
     JSONParser jParser = new JSONParser();
 
-    ArrayList<HashMap<String, String>> productsList;
+    ArrayList<HashMap<String, Object>> productsList;
 
     // url obtener todos los alojamientos
     private static String url_todos_alojamientos = Constants.URL_DOMINIO + "todos_los_alojamientos.php";
@@ -74,85 +64,68 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
     private static final String TAG_NOMBRE = "nombre_alojamiento";
     private static final String TAG_COMUNA = "id_comuna";
     private static final String TAG_FECHA = "fecha_ingreso";
-    private static final String TAG_IMAGE = "";
-    int idImage;
+    private static final String TAG_LATITUD = "latitud";
+    private static final String TAG_LONGITUD = "longitud";
 
-    public String nombreAlojamiento = "", idUsuario;
+    public String idUsuario, latitud, longitud, flag;
 
     // Alojamientos JSONArray
     JSONArray alojamiento = null;
 
-    public Alojamiento alojamientoClass;
 
-    //AQuery
-    private AQuery aq;
-    private ProgressBar progressBar;
-    public ImageLoader imageLoader;
+    ListView mListView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list_alojamiento, null);
+
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        imageLoader = new ImageLoader(this.getActivity().getApplicationContext());
-
-        aq = new AQuery(getActivity());
-        progressBar = (ProgressBar)getActivity().findViewById(R.id.progress);
-
         MainActivity mainActivity = (MainActivity) getActivity();
         idUsuario = mainActivity.getUsuario();
 
-        alojamientoClass = new Alojamiento();
+        mListView = (ListView) getActivity().findViewById(R.id.lv_alojamientos);
 
-        // obtener listview
-        ListView lv = getListView();
-
-        //pull_to_refresh_attacher = PullToRefreshAttacher.get(this);
 
         pull_to_refresh_attacher = ((MainActivity) getActivity()).getAttacher();
-        pull_to_refresh_attacher.addRefreshableView(lv, this);
+        pull_to_refresh_attacher.addRefreshableView(mListView, this);
 
 
-        // Hashmap para ListView
-        productsList = new ArrayList<HashMap<String, String>>();
-
-        // Cargando alojamientos en Background Thread
+        productsList = new ArrayList<HashMap<String, Object>>();
         new LoadAllProducts().execute();
 
-        // seleccionando un solo alojamiento de la lista
-        // lanzar pantalla VerAlojamientos
-        lv.setOnItemClickListener(new OnItemClickListener() {
+
+        mListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // obteniendo datos de el alojamiento seleccionado
+
                 String idAlojamiento = ((TextView) view.findViewById(R.id.idAlojamientoDetalle)).getText()
                         .toString();
-
-                // Iniciando nuevo intent
+                latitud = ((TextView) view.findViewById(R.id.id_latitud)).getText()
+                        .toString();
+                longitud = ((TextView) view.findViewById(R.id.id_longitud)).getText()
+                        .toString();
                 Intent in = new Intent(getActivity(),
                         AlojamientoActivity.class);
 
-                // Enviando idAlojamiento, idUsuario a siguiente actividad
                 in.putExtra("tagid", idAlojamiento);
                 in.putExtra("id_usuario", idUsuario);
-
-                // Iniciando nueva activity y esperando una respuesta de vuelta
+                in.putExtra("latitud", latitud);
+                in.putExtra("longitud", longitud);
                 getActivity().startActivityForResult(in, 100);
-
-
 
             }
         });
 
     }
 
-    // Respuesta desde VerAlojamientos activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -176,6 +149,7 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
             protected Void doInBackground(Void... params) {
                 try{
                     Thread.sleep(3000);
+
                 }catch (InterruptedException IE) {
                     IE.getStackTrace();
                 }
@@ -209,14 +183,8 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
         }
     }
 
-    /**
-     * Pantalla Async Task para cargar todos los productos haciendo HTTP Request
-     */
     class LoadAllProducts extends AsyncTask<String, String, String> {
 
-        /**
-         * Despues de iniciar background mostrar Progress Dialog
-         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -227,79 +195,42 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
             pDialog.show();
         }
 
-        /**
-         * Obteniendo todos los alojamientos desde url
-         */
 
         protected String doInBackground(String... args) {
-            // Creando parametros
+
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            // Obteniendo JSON string desde url
             JSONObject json = jParser.makeHttpRequest(url_todos_alojamientos, "GET", params);
 
             try {
-                // Chequeando para SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
-                    // Alojamiento encontrado
-                    // Obteniendo Array de alojamientos
+
                     alojamiento = json.getJSONArray(TAG_ALOJAMIENTO);
 
-                    // loop a traves de todos los alojamientos
                     for (int i = 0; i < alojamiento.length(); i++) {
                         JSONObject c = alojamiento.getJSONObject(i);
 
-                        // Ingresando cada JSON Item en las variables
                         String idAlojamiento = c.getString(TAG_ID);
                         String nombre = c.getString(TAG_NOMBRE);
-                        String comuna = c.getString(TAG_COMUNA);
                         String fechaIngreso = c.getString(TAG_FECHA);
+                        latitud = c.getString(TAG_LATITUD);
+                        longitud = c.getString(TAG_LONGITUD);
 
-                        alojamientoClass.setNombreAlojamiento(c.getString(TAG_NOMBRE));
-                        Log.d("Alojamiento Class", alojamientoClass.getNombreAlojamiento());
+                        String urlImg = "http://moradaestudiantil.com/web_html/img/Alojamientos/sin_alojamientos_1.jpg";
+                        flag = urlImg;
 
-                        nombreAlojamiento = c.getString(TAG_NOMBRE);
-
-
-
-                        /*try{
-                            ImageView imageView = (ImageView) getActivity().findViewById(R.id.img_row);
-                            idImage = getResources().getIdentifier("alojamiento_" + idAlojamiento, "drawable", getActivity().getPackageName());
-                            //Drawable drawable = getResources().getDrawable(idImage);
-                            //imageView.setImageDrawable(drawable);
-                        } catch (Resources.NotFoundException e){
-                            ImageView imageView = (ImageView) getActivity().findViewById(R.id.img_header);
-                            //imageView.setImageResource(R.drawable.hotel1_1);
-                        }*/
-
-
-                        String imgId = String.valueOf(idImage);
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                final String urlImg = "http://moradaestudiantil.com/web_html/img/Alojamientos/23.jpg";
-
-                                ImageView imageView = (ImageView)getActivity().findViewById(R.id.img_row);
-                                /*Picasso.with(getActivity().getApplicationContext()).load(urlImg).error(R.drawable.hotel2_1).into(imageView);*/
-                            }
-                        });
-
-
-                        /*imageLoader.DisplayImage(urlImg, 0, imageView);*/
-                        /*aq.id(imageView).image(urlImg, true, true, 1, R.drawable.hotel2_1);*/
-
-                        // Creando nuevo HashMap
-                        HashMap<String, String> map = new HashMap<String, String>();
+                        //Creando nuevo HashMap
+                        HashMap<String, Object> map = new HashMap<String, Object>();
 
                         // a�adiendo cada nodo a HashMap key => value
-                        map.put(TAG_IMAGE, "url");
+                        map.put("flag", R.drawable.blank);
+                        map.put("flag_path", flag);
                         map.put(TAG_ID, idAlojamiento);
                         map.put(TAG_NOMBRE, nombre);
                         map.put(TAG_FECHA, fechaIngreso);
-
+                        map.put(TAG_LATITUD, latitud);
+                        map.put(TAG_LONGITUD, longitud);
 
                         // a�adiendo HashList a ArrayList
                         productsList.add(map);
@@ -308,29 +239,31 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
                     // alojamiento no encontrado
 
                 }
+
             } catch (JSONException e) {
-                pDialog.dismiss();
-                e.printStackTrace();
+                    pDialog.dismiss();
+                    e.printStackTrace();
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
 
-                        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                        alert.setTitle("¡Error!");
-                        alert.setMessage("Revisa la conexión de red o vuelve a intentarlo más tarde.");
-                        alert.setCancelable(false);
-                        alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        alert.create().show();
+                            final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                            alert.setTitle("¡Error!");
+                            alert.setMessage("Revisa la conexión de red o vuelve a intentarlo más tarde.");
+                            alert.setCancelable(false);
+                            alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            alert.create().show();
 
-                    }
-                });
+                        }
+                    });
+
             } catch (NullPointerException e){
                 pDialog.dismiss();
                 e.printStackTrace();
@@ -359,34 +292,35 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
             return null;
         }
 
-
-
-        /**
-         * Despues de completar background cerrar Progress Dialog
-         * *
-         */
         protected void onPostExecute(String file_url) {
             // cerrando Dialog despues de obtener todos los alojamientos
             pDialog.dismiss();
             // actualizando UI desde Background Thread
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    /**
-                     * Actualizando parsed JSON data a ListView
-                     * */
 
-
-
-                    Log.d("URL IMAGE: ", TAG_IMAGE);
-
-
-                     ListAdapter adapter = new SimpleAdapter(
+                     SimpleAdapter adapter = new SimpleAdapter(
                             ListAlojamientoFragment.this.getActivity(), productsList,
-                            R.layout.lista_items, new String[]{TAG_IMAGE, TAG_NOMBRE,
-                            TAG_FECHA, TAG_ID},
-                            new int[]{R.id.img_row, R.id.idAlojamiento, R.id.nombre, R.id.idAlojamientoDetalle});
+                            R.layout.lista_items, new String[]{"flag", TAG_NOMBRE,
+                            TAG_FECHA, TAG_ID, TAG_LATITUD, TAG_LONGITUD},
+                            new int[]{R.id.img_row, R.id.idAlojamiento, R.id.nombre, R.id.idAlojamientoDetalle, R.id.id_latitud, R.id.id_longitud});
 
-                    setListAdapter(adapter);
+                     mListView.setAdapter(adapter);
+
+                    for(int i=0;i<adapter.getCount();i++) {
+                        HashMap<String, Object> hm = (HashMap<String, Object>) adapter.getItem(i);
+                        String imgUrl = (String) hm.get("flag_path");
+
+                        ImageLoaderTask imageLoaderTask = new ImageLoaderTask();
+
+                        HashMap<String, Object> hmDownload = new HashMap<String, Object>();
+                        hm.put("flag_path", imgUrl);
+                        hm.put("position", i);
+
+                        // Starting ImageLoaderTask to download and populate image in the listview
+                        imageLoaderTask.execute(hm);
+                    }
+
                 }
             });
 
@@ -394,19 +328,92 @@ public class ListAlojamientoFragment extends android.support.v4.app.ListFragment
 
     }
 
-    public static boolean exists(String URLName){
-        try {
-            HttpURLConnection.setFollowRedirects(false);
-            // note : you may also need
-            //        HttpURLConnection.setInstanceFollowRedirects(false)
-            HttpURLConnection con =
-                    (HttpURLConnection) new URL(URLName).openConnection();
-            con.setRequestMethod("HEAD");
-            return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
+
+    /** AsyncTask to download and load an image in ListView */
+    private class ImageLoaderTask extends AsyncTask<HashMap<String, Object>, Void, HashMap<String, Object>>{
+
+        @Override
+        protected HashMap<String, Object> doInBackground(HashMap<String, Object>... hm) {
+
+            try {
+
+                InputStream iStream= null;
+                String imgUrl = (String) hm[0].get("flag_path");
+                int position = (Integer) hm[0].get("position");
+                URL url;
+
+                url = new URL(imgUrl);
+
+                // Creating an http connection to communicate with url
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                // Connecting to url
+                urlConnection.connect();
+
+                // Reading data from url
+                iStream = urlConnection.getInputStream();
+
+                // Getting Caching directory
+                File cacheDirectory = getActivity().getBaseContext().getCacheDir();
+
+                // Temporary file to store the downloaded image
+                File tmpFile = new File(cacheDirectory.getPath() + "/wpta_"+position+".png");
+
+                // The FileOutputStream to the temporary file
+                FileOutputStream fOutStream = new FileOutputStream(tmpFile);
+
+                // Creating a bitmap from the downloaded inputstream
+                Bitmap b = BitmapFactory.decodeStream(iStream);
+
+                // Writing the bitmap to the temporary file as png or jpeg file
+                b.compress(Bitmap.CompressFormat.JPEG,10, fOutStream);
+
+                // Flush the FileOutputStream
+                fOutStream.flush();
+
+                //Close the FileOutputStream
+                fOutStream.close();
+
+                // Create a hashmap object to store image path and its position in the listview
+                HashMap<String, Object> hmBitmap = new HashMap<String, Object>();
+
+                // Storing the path to the temporary image file
+                hmBitmap.put("flag", tmpFile.getPath());
+
+                // Storing the position of the image in the listview
+                hmBitmap.put("position", position);
+
+
+                // Returning the HashMap object containing the image path and position
+                return hmBitmap;
+
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
+
+        @Override
+        protected void onPostExecute(HashMap<String, Object> result) {
+            // Getting the path to the downloaded image
+            String path = (String) result.get("flag");
+
+            // Getting the position of the downloaded image
+            int position = (Integer) result.get("position");
+
+            // Getting adapter of the listview
+            SimpleAdapter adapter = (SimpleAdapter ) mListView.getAdapter();
+
+            // Getting the hashmap object at the specified position of the listview
+            HashMap<String, Object> hm = (HashMap<String, Object>) adapter.getItem(position);
+
+            // Overwriting the existing path in the adapter
+            hm.put("flag", path);
+
+            // Noticing listview about the dataset changes
+            adapter.notifyDataSetChanged();
+
         }
     }
 
